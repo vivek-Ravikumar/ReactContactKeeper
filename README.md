@@ -1,2 +1,0 @@
-# ReactContactKeeper
-Created with CodeSandbox
