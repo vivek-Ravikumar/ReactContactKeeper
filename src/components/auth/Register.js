@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import AlertContext from "../../context/alerts/alertContext";
 import AuthContext from "../../context/contact/auth/authContext";
 const Register = () => {
@@ -12,7 +12,14 @@ const Register = () => {
   });
 
   const { setAlert } = alertContext;
-  const { register } = authContext;
+  const { register, error, clearErrors } = authContext;
+
+  useEffect(() => {
+    if (error) {
+      setAlert(error, "danger");
+      clearErrors();
+    }
+  }, [error]);
 
   const { name, email, password, password2 } = user;
 
@@ -28,15 +35,13 @@ const Register = () => {
     if (name === "" || email === "" || password === "") {
       setAlert("Please enter all fields", "danger");
     } else if (password !== password2) {
-      setAlert("Please do not match", "danger");
+      setAlert("Passwords do not match", "danger");
     } else {
       register({
         name,
         email,
         password
-      })
-        // .then(res => res.json())
-        // .then(data => console.log(data));
+      });
     }
   };
   return (

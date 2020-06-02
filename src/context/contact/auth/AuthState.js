@@ -39,11 +39,19 @@ const AuthState = props => {
         "https://zruue.sse.codesandbox.io/api/users/",
         config
       );
-      console.log(res.message);
-      dispatch({
-        type: REGISTER_SUCCESS,
-        payload: res.token
-      });
+      const data = await res.json();
+      console.log(data);
+      if (data.status === "success") {
+        dispatch({
+          type: REGISTER_SUCCESS,
+          payload: data.token
+        });
+      } else {
+        dispatch({
+          type: REGISTER_FAIL,
+          payload: data.status
+        });
+      }
     } catch (e) {
       dispatch({
         type: REGISTER_FAIL,
@@ -64,7 +72,7 @@ const AuthState = props => {
 
   //clear Errors
   const clearErrors = () => {
-    console.log("clearerrors");
+    dispatch({ type: CLEAR_ERRORS });
   };
 
   return (
